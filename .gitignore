@@ -1,0 +1,10 @@
+dotnet/
+golang/
+./*.yaml
+operator/api
+operator/controllers
+operator/*.mod
+operator/*.sum
+operator/crds.yaml
+operator/dotnet.EmailOperator/bin
+operator/dotnet.EmailOperator/obj
