@@ -1,4 +1,0 @@
-F:\Projects\mail\dotnet\obj\Debug\net7.0\dotnet.GeneratedMSBuildEditorConfig.editorconfig
-F:\Projects\mail\dotnet\obj\Debug\net7.0\dotnet.AssemblyInfoInputs.cache
-F:\Projects\mail\dotnet\obj\Debug\net7.0\dotnet.AssemblyInfo.cs
-F:\Projects\mail\dotnet\obj\Debug\net7.0\dotnet.csproj.CoreCompileInputs.cache
