@@ -16,7 +16,7 @@ namespace EmailOperator.Controller;
 public class EmailController : IResourceController<Email>
 {
     private const string API_TOKEN_SECRET_KEY = "token";
-    private const string MAIL_SERVICE_ENDPOINT = "https://connect.mailerlite.com";
+    private const string MAIL_SERVICE_ENDPOINT = "https://api.mailersend.com/v1/email";
     
     private readonly IKubernetesClient _kubernetes;
     private readonly ILogger<EmailController> _logger;
@@ -91,7 +91,7 @@ public class EmailController : IResourceController<Email>
 
         var request = new HttpRequestMessage(HttpMethod.Post, MAIL_SERVICE_ENDPOINT){
             Headers = {
-                { "Authorization", $"Bearer {apiToken}" },
+                { "Authorization", $"Bearer {apiToken}"},
                 { "Accept", "application/json" }
             },
             Content = content
