@@ -20,6 +20,9 @@ When code is ready, `operator/golang/src/Dockerfile` is used to build operator i
 * operator
   * golang
     * src
+      * Dockerfile
+      * cmd
+        * main.go
       * api
         * v1
           * email_types.go
