@@ -22,6 +22,7 @@ import (
 	"net/http"
 	"bytes"
 	"fmt"
+	"io"
 
 	"k8s.io/apimachinery/pkg/runtime"
     "k8s.io/apimachinery/pkg/api/errors"
@@ -75,7 +76,7 @@ func (r *EmailReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl
 	config := &mailerlitecomv1.EmailSenderConfig{}
 	err = r.Get(ctx, client.ObjectKey{Namespace: req.NamespacedName.Namespace, Name: email.Spec.SenderConfigRef}, config)
 	if err != nil {
-		email.Status = mailerlitecomv1.EmailStatus{DeliveryStatus: "Failed", Error: "Sender config not found"}
+		email.Status = mailerlitecomv1.EmailStatus{DeliveryStatus: "Failed", MessageId: "", Error: "Sender config not found"}
 		_ = r.Status().Update(ctx, email)
 		return ctrl.Result{}, err
 	}
@@ -83,7 +84,7 @@ func (r *EmailReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl
 	secret := &corev1.Secret{}
 	err = r.Get(ctx, client.ObjectKey{Namespace: req.Namespace, Name: config.Spec.ApiTokenSecretRef}, secret)
 	if err != nil {
-		email.Status = mailerlitecomv1.EmailStatus{DeliveryStatus: "Failed", Error: "Api Token Secret not found"}
+		email.Status = mailerlitecomv1.EmailStatus{DeliveryStatus: "Failed", MessageId: "", Error: "Api Token Secret not found"}
 		_ = r.Status().Update(ctx, email)
 		return ctrl.Result{}, err
 	}
@@ -99,36 +100,45 @@ func (r *EmailReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl
 			{ "email": email.Spec.RecipientEmail },
 		},
 		"subject": email.Spec.Subject,
-		"body": email.Spec.Body,
+		"text": email.Spec.Body,
 	})
 	if err != nil {
+		email.Status = mailerlitecomv1.EmailStatus{DeliveryStatus: "Failed", MessageId: "", Error: fmt.Sprintf("%s", err)}
 		return ctrl.Result{}, err
 	}
 	
 	httpReq, err := http.NewRequest("POST", url, bytes.NewBuffer(requestBody))
 	if err != nil {
+		email.Status = mailerlitecomv1.EmailStatus{DeliveryStatus: "Failed", MessageId: "", Error: fmt.Sprintf("%s", err)}
 		return ctrl.Result{}, err
 	}
 	httpReq.Header.Set("Content-Type", "application/json")
-	httpReq.Header.Set("X-MailerLite-ApiKey", apiToken)
+	httpReq.Header.Set("Authorization", fmt.Sprintf("Bearer %s", apiToken))
 	
 	client := &http.Client{}
 	
-	logger.Info("\n\nHERE\n\n")
-	
 	httpResp, err := client.Do(httpReq)
 	if err != nil {
+		email.Status = mailerlitecomv1.EmailStatus{DeliveryStatus: "Failed", MessageId: "", Error: fmt.Sprintf("%s", err)}
 		return ctrl.Result{}, err
 	}
-	logger.Info("\n\nHERE2\n\n")
-	defer httpResp.Body.Close()
-	logger.Info("\n\nHERE3\n\n")
-	if httpResp.StatusCode != http.StatusOK {
-	logger.Info("\n\nHERE4\n\n")
-		return ctrl.Result{}, fmt.Errorf("Failed to send email")
-	}
-	logger.Info("\n\nHERE5\n\n")
 
+	defer httpResp.Body.Close()
+
+	if httpResp.StatusCode < 200 && httpResp.StatusCode >= 300 {
+		bodyBytes, err := io.ReadAll(httpResp.Body)
+    		if err != nil {
+			email.Status = mailerlitecomv1.EmailStatus{DeliveryStatus: "Failed", MessageId: "", Error: fmt.Sprintf("%s", err)}
+			return ctrl.Result{}, err
+    		}
+    		bodyString := string(bodyBytes)
+    		logger.Info(fmt.Sprintf("%i: %s", httpResp.StatusCode, bodyString))
+		email.Status = mailerlitecomv1.EmailStatus{DeliveryStatus: "Failed", MessageId: "", Error: fmt.Sprintf("%s", err)}
+		return ctrl.Result{}, fmt.Errorf("%i: %s", httpResp.StatusCode, bodyString)
+	}
+
+	logger.Info("Email sent")
+	email.Status = mailerlitecomv1.EmailStatus{DeliveryStatus: "Succeeded", MessageId: "", Error: ""}
 	return ctrl.Result{}, nil
 }
 
