@@ -1,8 +1,1 @@
-dotnet/
-golang/
-./*.yaml
-operator/*.mod
-operator/*.sum
-operator/crds.yaml
-operator/dotnet.EmailOperator/bin
-operator/dotnet.EmailOperator/obj
+bin/
