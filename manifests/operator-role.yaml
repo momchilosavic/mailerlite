@@ -35,11 +35,17 @@ rules:
   - update
   - delete
 - apiGroups:
-  - apps
   - v1
   resources:
-  - deployments
   - secrets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - apps
+  resources:
+  - deployments
   verbs:
   - get
   - list
