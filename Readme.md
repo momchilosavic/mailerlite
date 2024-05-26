@@ -6,7 +6,8 @@ To build go application and use operator-sdk, docker container was used:
 * operator-sdk_linux_amd64
 
 ### Build and deploy operator
-When code is ready, `operator/golang/src/Dockerfile` is used to build operator image: `docker build ./operator/golang/src -t email-operator:golang`
+For sake of simplesness, no deployment manager is used (helm) for kubernetes resources, and api token values are saved directly in repo
+</br> When code is ready, `operator/golang/src/Dockerfile` is used to build operator image: `docker build ./operator/golang/src -t email-operator:golang`
 </br>For testing purpose, minikube and local image were used. Because of that, deployment definition in manifests/operator-deployment.yaml defines NeverPullPolicy and email-operator:golang image for cotainer image
 </br>Based on your environment `docker build` command and manifest must be adapted.
 </br>When image is ready, deploy Kubernetes resources:
