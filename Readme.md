@@ -36,24 +36,24 @@ When code is ready, `operator/golang/src/Dockerfile` is used to build operator i
 # Tests
 ### Successful email
 ##### Controller
-![Screenshot](/screenshots/email-controller-success.png)
+![Screenshot](/screenshots/email-controller-success.PNG)
 ##### Email resource
-![Screenshot](/screenshots/email-success.png)
+![Screenshot](/screenshots/email-success.PNG)
 ##### MailerSend GUI
-![Screenshot](/screenshots/mailersend-activity.png)
-![Screenshot](/screenshots/mailersend-domain.png)
+![Screenshot](/screenshots/mailersend-activity.PNG)
+![Screenshot](/screenshots/mailersend-domain.PNG)
 ### Sender Configuration failure
 ##### Controller
-![Screenshot](/screenshots/email-controller-failure-senderconfig.png)
+![Screenshot](/screenshots/email-controller-failure-senderconfig.PNG)
 ##### Email resource
-![Screenshot](/screenshots/email-failure-senderconfig.png)
+![Screenshot](/screenshots/email-failure-senderconfig.PNG)
 ### Secret failure
 ##### Controller
-![Screenshot](/screenshots/email-controller-failure-secret.png)
+![Screenshot](/screenshots/email-controller-failure-secret.PNG)
 ##### Email resource
-![Screenshot](/screenshots/email-failure-secret.png)
+![Screenshot](/screenshots/email-failure-secret.PNG)
 ### HTTP Request failure
 ##### Controller
-![Screenshot](/screenshots/email-controller-failure-request.png)
+![Screenshot](/screenshots/email-controller-failure-request.PNG)
 ##### Email resource
-![Screenshot](/screenshots/email-failure-request.png)
+![Screenshot](/screenshots/email-failure-request.PNG)
