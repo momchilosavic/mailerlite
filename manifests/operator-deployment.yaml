@@ -23,3 +23,10 @@ spec:
       - name: operator
         image: email-operator:golang
         imagePullPolicy: Never
+        resources:
+          requests:
+            cpu: 0.8
+            memory: 256Mi
+          limits:
+            cpu: 0.8
+            memory: 256Mi

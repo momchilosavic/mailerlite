@@ -20,7 +20,7 @@ metadata:
   name: test
   namespace: default
 spec:
-  apiTokenSecretRef: mail-token
+  apiTokenSecretRef: mail-token23
   senderEmail: momcilo.savic@trial-v69oxl5ox8rg785k.mlsender.net
 ---
 apiVersion: mailerlite.com/v1
@@ -32,16 +32,16 @@ spec:
   apiTokenSecretRef: mail-token-2
   senderEmail: momcilo.savic@trial-yzkq340o8p04d796.mlsender.net
 ---
-#apiVersion: mailerlite.com/v1
-#kind: Email
-#metadata:
-#  name: test
-#  namespace: default
-#spec:
-#  senderConfigRef: test
-#  recipientEmail: momcilo.savic@hotmail.com
-#  subject: test
-#  body: test
+apiVersion: mailerlite.com/v1
+kind: Email
+metadata:
+  name: test
+  namespace: default
+spec:
+  senderConfigRef: test
+  recipientEmail: momcilo.savic@hotmail.com
+  subject: test
+  body: test
 ---
 apiVersion: mailerlite.com/v1
 kind: Email

@@ -38,9 +38,17 @@ type EmailSpec struct {
 
 	// Foo is an example field of Email. Edit email_types.go to remove/update
 	// Foo string `json:"foo,omitempty"`
+   	// +kubebuilder:validation:Required
+   	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Value is immutable"
 	SenderConfigRef string `json:"senderConfigRef,omitempty"`
+   	// +kubebuilder:validation:Required
+   	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Value is immutable"
 	RecipientEmail string `json:"recipientEmail,omitempty"`
+   	// +kubebuilder:validation:Required
+   	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Value is immutable"
 	Subject string `json:"subject,omitempty"`
+   	// +kubebuilder:validation:Required
+   	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Value is immutable"
 	Body string `json:"body,omitempty"`
 }
 
@@ -55,8 +63,6 @@ type EmailStatus struct {
 
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
-
-// Email is the Schema for the emails API
 type Email struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

@@ -103,13 +103,15 @@ func (r *EmailReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl
 		"text": email.Spec.Body,
 	})
 	if err != nil {
-		email.Status = mailerlitecomv1.EmailStatus{DeliveryStatus: "Failed", MessageId: "", Error: fmt.Sprintf("%s", err)}
+		email.Status = mailerlitecomv1.EmailStatus{DeliveryStatus: "Failed", MessageId: "", Error: fmt.Sprintf("%v", err)}
+		_ = r.Status().Update(ctx, email)
 		return ctrl.Result{}, err
 	}
 	
 	httpReq, err := http.NewRequest("POST", url, bytes.NewBuffer(requestBody))
 	if err != nil {
-		email.Status = mailerlitecomv1.EmailStatus{DeliveryStatus: "Failed", MessageId: "", Error: fmt.Sprintf("%s", err)}
+		email.Status = mailerlitecomv1.EmailStatus{DeliveryStatus: "Failed", MessageId: "", Error: fmt.Sprintf("%v", err)}
+		_ = r.Status().Update(ctx, email)
 		return ctrl.Result{}, err
 	}
 	httpReq.Header.Set("Content-Type", "application/json")
@@ -119,26 +121,31 @@ func (r *EmailReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl
 	
 	httpResp, err := client.Do(httpReq)
 	if err != nil {
-		email.Status = mailerlitecomv1.EmailStatus{DeliveryStatus: "Failed", MessageId: "", Error: fmt.Sprintf("%s", err)}
+		email.Status = mailerlitecomv1.EmailStatus{DeliveryStatus: "Failed", MessageId: "", Error: fmt.Sprintf("%v", err)}
+		_ = r.Status().Update(ctx, email)
 		return ctrl.Result{}, err
 	}
 
 	defer httpResp.Body.Close()
 
-	if httpResp.StatusCode < 200 && httpResp.StatusCode >= 300 {
+	if httpResp.StatusCode < 200 || httpResp.StatusCode >= 300 {
 		bodyBytes, err := io.ReadAll(httpResp.Body)
     		if err != nil {
-			email.Status = mailerlitecomv1.EmailStatus{DeliveryStatus: "Failed", MessageId: "", Error: fmt.Sprintf("%s", err)}
+			email.Status = mailerlitecomv1.EmailStatus{DeliveryStatus: "Failed", MessageId: "", Error: fmt.Sprintf("%v", err)}
+			_ = r.Status().Update(ctx, email)
 			return ctrl.Result{}, err
     		}
     		bodyString := string(bodyBytes)
     		logger.Info(fmt.Sprintf("%i: %s", httpResp.StatusCode, bodyString))
-		email.Status = mailerlitecomv1.EmailStatus{DeliveryStatus: "Failed", MessageId: "", Error: fmt.Sprintf("%s", err)}
+		email.Status = mailerlitecomv1.EmailStatus{DeliveryStatus: "Failed", MessageId: "", Error: fmt.Sprintf("%s", bodyString)}
+		_ = r.Status().Update(ctx, email)
 		return ctrl.Result{}, fmt.Errorf("%i: %s", httpResp.StatusCode, bodyString)
 	}
 
-	logger.Info("Email sent")
-	email.Status = mailerlitecomv1.EmailStatus{DeliveryStatus: "Succeeded", MessageId: "", Error: ""}
+	messageId := httpResp.Header.Get("X-Message-Id")
+	logger.Info(fmt.Sprintf("Email sent: %s", messageId))
+	email.Status = mailerlitecomv1.EmailStatus{DeliveryStatus: "Succeeded", MessageId: messageId, Error: ""}
+	_ = r.Status().Update(ctx, email)
 	return ctrl.Result{}, nil
 }
 

@@ -35,7 +35,7 @@ rules:
   - update
   - delete
 - apiGroups:
-  - v1
+  - ""
   resources:
   - secrets
   verbs:
@@ -73,13 +73,3 @@ rules:
   - get
   - patch
   - update
-- apiGroups:
-  - "*"
-  resources:
-  - "*"
-  verbs:
-  - get
-  - patch
-  - update
-  - list
-  - create
