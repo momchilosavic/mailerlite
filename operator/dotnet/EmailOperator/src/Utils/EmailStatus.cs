@@ -6,10 +6,10 @@ namespace EmailOperator.Utils{
         public string MessageId { get; set; } = String.Empty;
         public string Error { get; set; } = String.Empty;
     
-        public EmailStatus(string deliveryStatus, string messageId, string Error) {
+        public EmailStatus(string deliveryStatus, string messageId, string error) {
             DeliveryStatus = deliveryStatus;
             MessageId = messageId;
-            Error = Error;
+            Error = error;
         }
     }
 }

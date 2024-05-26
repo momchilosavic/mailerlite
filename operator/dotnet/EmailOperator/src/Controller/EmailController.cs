@@ -46,7 +46,7 @@ public class EmailController : IResourceController<Email>
             var apiToken = Encoding.UTF8.GetString(apiTokenSecret.Data[API_TOKEN_SECRET_KEY]);
 
             EmailStatus emailStatus = await SendEmailAsync(apiToken, emailSenderConfig.Spec.SenderEmail, email.Spec.RecipientEmail, email.Spec.Subject, email.Spec.Body);
-            await UpdateEmailStatusAsync(email, emailStatus);
+	    await UpdateEmailStatusAsync(email, emailStatus);
         }
         catch(Exception ex) {
             _logger.LogError(ex, "Error reconciling Email");
@@ -98,15 +98,15 @@ public class EmailController : IResourceController<Email>
         };
 
         var response = await _httpClient.SendAsync(request);
+	
         var responseContent = await response.Content.ReadAsStringAsync();
 
         if (response.IsSuccessStatusCode){
-            var responseData = JsonConvert.DeserializeObject<dynamic>(responseContent);
-            var messageId = responseData.message_id;
-            return new EmailStatus("Sent", messageId, null);
+            return new EmailStatus("Sent", "Mail successfully sent", null);
         }
-
-        return new EmailStatus("Failed", null, responseContent);
+	else {
+	        return new EmailStatus("Failed", null, $"{response.StatusCode}: {responseContent}");
+	}
     }
 
     
@@ -114,11 +114,9 @@ public class EmailController : IResourceController<Email>
         email.Status.DeliveryStatus = deliveryStatus;
         email.Status.MessageId = messageId;
         email.Status.Error = error;
-
-        await _kubernetes.Get<Email>(email.Name(), email.Namespace());
     }
 
     private async Task UpdateEmailStatusAsync(Email email, EmailStatus emailStatus){
-        UpdateEmailStatusAsync(email, emailStatus.DeliveryStatus, emailStatus.MessageId, emailStatus.Error);
+        await UpdateEmailStatusAsync(email, emailStatus.DeliveryStatus, emailStatus.MessageId, emailStatus.Error);
     }
 }
