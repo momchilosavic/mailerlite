@@ -1,0 +1,64 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: manager-role
+rules:
+- apiGroups:
+  - mailerlite.com
+  resources:
+  - emails
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - mailerlite.com
+  resources:
+  - emails/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - mailerlite.com
+  resources:
+  - emails/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - mailerlite.com
+  resources:
+  - emailsenderconfigs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - mailerlite.com
+  resources:
+  - emailsenderconfigs/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - mailerlite.com
+  resources:
+  - emailsenderconfigs/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - v1
+  resources:
+  - secrets
+  verbs:
+  - get

@@ -1,0 +1,5 @@
+## Append samples of your project ##
+resources:
+- mailerlite_v1_email.yaml
+- mailerlite_v1_emailsenderconfig.yaml
+#+kubebuilder:scaffold:manifestskustomizesamples

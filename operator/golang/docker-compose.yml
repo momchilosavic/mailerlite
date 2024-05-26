@@ -1,0 +1,14 @@
+version: '3.3'
+
+services:
+  golang:
+    container_name: golang
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["sleep", "infinity"]
+    hostname: golang
+    privileged: true
+    volumes:
+      - F:\Projects\mail\operator\golang:/src
+      
