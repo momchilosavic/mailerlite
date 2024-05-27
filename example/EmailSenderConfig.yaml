@@ -1,0 +1,17 @@
+apiVersion: mailerlite.com/v1
+kind: EmailSenderConfig
+metadata:
+  name: test
+  namespace: default
+spec:
+  apiTokenSecretRef: mail-token23
+  senderEmail: momcilo.savic@trial-v69oxl5ox8rg785k.mlsender.net
+---
+apiVersion: mailerlite.com/v1
+kind: EmailSenderConfig
+metadata:
+  name: test-2
+  namespace: default
+spec:
+  apiTokenSecretRef: mail-token-2
+  senderEmail: momcilo.savic@trial-yzkq340o8p04d796.mlsender.net

@@ -1,0 +1,21 @@
+apiVersion: mailerlite.com/v1
+kind: Email
+metadata:
+  name: test
+  namespace: default
+spec:
+  senderConfigRef: test
+  recipientEmail: momcilo.savic@hotmail.com
+  subject: test
+  body: test
+---
+apiVersion: mailerlite.com/v1
+kind: Email
+metadata:
+  name: test-2
+  namespace: default
+spec:
+  senderConfigRef: test-2
+  recipientEmail: momcilo.savic@hotmail.com
+  subject: test
+  body: test

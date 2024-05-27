@@ -1,0 +1,17 @@
+deployment:
+  replicas: 1
+  resources:
+    requests:
+      cpu: 0.8
+      memory: 256Mi
+    limits: 
+      cpu: 0.8
+      memory: 256Mi
+  image: email-operator:golang
+  imagePullSecrets: []
+  imagePullPolicy: Never
+
+secrets:
+  - name: 
+    namespace:
+    token: 
