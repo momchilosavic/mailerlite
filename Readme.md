@@ -35,6 +35,12 @@ To build go application and use operator-sdk, docker container was used:
 * screenshoots
 
 # Tests
+## EmailSenderConfig
+### Create/update
+##### Controller
+![Screenshot](/screenshots/emailsenderconfig-controller.PNG)
+
+## Email
 ### Successful email
 ##### Controller
 ![Screenshot](/screenshots/email-controller-success.PNG)
