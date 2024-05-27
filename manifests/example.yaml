@@ -4,8 +4,15 @@ metadata:
   name: mail-token
   namespace: default
 data:
-  token_old: "ZXlKMGVYQWlPaUpLVjFRaUxDSmhiR2NpT2lKU1V6STFOaUo5LmV5SmhkV1FpT2lJMElpd2lhblJwSWpvaU9XUmlaVGszTm1Rd01UVmpZVGxsWldGaE1tVmlOVGt3T1RWaU56VXhOR00zTW1FME9EVmpObVV3TkdRMU0ySXhZMlUxT0dOaU1EUm1NVFJtT1RCak9ESTJZbUppWkdOa1kyWTBaVFEzTmpjaUxDSnBZWFFpT2pFM01UWTBOamMwTWpZdU1UTXpPREUwTENKdVltWWlPakUzTVRZME5qYzBNall1TVRNek9ERTJMQ0psZUhBaU9qUTROekl4TkRFd01qWXVNVE13TVRJM0xDSnpkV0lpT2lJNU5qY3lNaklpTENKelkyOXdaWE1pT2x0ZGZRLk1TengxVWNBYTcyYmgtSklEUWZQV0tjZ3QtbUZxTmNlN0RTTUpQMDgwU0syaVZuSWc4cml2dXc2eXJhdWZ4MEIza1YwOWUtajZ4SGNkQndOUldnbUVKS2JzTjRwYUhfSDRCdUJNR0E3VzAyOVM5S19FeUh4Z0RJeFlqU1l1ZWNzdzZEZGwxU1JPalZqZ2h6MFlYTlVZak5yWDRaVVBpMTV5Q2lXdmJINGVhcTRVaXdaYVhEcmpNQmU3cjBSX0o4R1FldkZ1NnRldnNoNHpWZkVzOElOc1E5TXBBajI3bjkzOHpDdmgzMkF6RkdUX0VEbmFRR2d5b0FMbVJoRlZsZDhCenlMOWlFRjk5RG5UbDY0cXZkd0h2c1FXUVJZemZiUmgtWUg3WS1nRVpYMjdrSEotTTFyZXJaM2cyNkVZLXo5M3UwclNXZnFBb0twUXZzdGRnc0JRdnRvcE5JNkFzRGRDUDVfZnBXYlYxNVF1aE5XeVk5OHI4Nmk3VzhycG51VXdPWVZKUV91VjBOYVhhdnZzLUdnc2UyQW9qTDBIWktpRHEtN3R4NG5SS3dmRzBnenIwYXdZZXhSYUdKbXNwdWtQdE1yTWhpbDdNNUZwd1RvNkIxN3o4ZGNvVDNGMnpaRnJQa3JrU2dURlpSX3RjQi1BY3B0NEdidWdjdzNobnhYWkdWUEx3MzlvMERJQnVURk1RR3E1UEloNUNPRGJyQnBhT0dHcldZdTZFQ2pURXEzMWR6b25NRGNtU2NUa2NSTG5JaHNhV0NBQWhUU2s1bTJwcFdhYncxM1J4MjdqZnVQbEVjeDhVVmlzOXhZMjdxbldTQUMtTWpzR0ZqMW10azE3aGNPM2hwV09YZl9rLXQxazRpUHdmbnBFcnNQNS01X3drQi1remNDd0NJ"
-  token: "mlsn.03ee440e93e2cd3236741ba524604e07288906e4846d74b0e1e4232afd80c76f"
+  token: "bWxzbi5jYWVkNWE0N2EyZGNiMmZjZGFmNWI2Yzk2ZTUzYzYyNWRlYzRlZmE2NDg3YjBkYjA4NmY2YzNiZDM4ZTkzNTA0"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mail-token-2
+  namespace: default
+data:
+  token: "bWxzbi5iNDkwNDkzYTg4OWIyZjY3NDNjMDllNDg5NWJmYzRmMWUyYzVkMWZiOTZhZWI4M2EyNGVmNjdiYTRhODVhMjg0"
 ---
 apiVersion: mailerlite.com/v1
 kind: EmailSenderConfig
@@ -13,8 +20,17 @@ metadata:
   name: test
   namespace: default
 spec:
-  apiTokenSecretRef: mail-token
-  senderEmail: momcilo.savic@hotmail.com
+  apiTokenSecretRef: mail-token23
+  senderEmail: momcilo.savic@trial-v69oxl5ox8rg785k.mlsender.net
+---
+apiVersion: mailerlite.com/v1
+kind: EmailSenderConfig
+metadata:
+  name: test-2
+  namespace: default
+spec:
+  apiTokenSecretRef: mail-token-2
+  senderEmail: momcilo.savic@trial-yzkq340o8p04d796.mlsender.net
 ---
 apiVersion: mailerlite.com/v1
 kind: Email
@@ -23,6 +39,17 @@ metadata:
   namespace: default
 spec:
   senderConfigRef: test
+  recipientEmail: momcilo.savic@hotmail.com
+  subject: test
+  body: test
+---
+apiVersion: mailerlite.com/v1
+kind: Email
+metadata:
+  name: test-2
+  namespace: default
+spec:
+  senderConfigRef: test-2
   recipientEmail: momcilo.savic@hotmail.com
   subject: test
   body: test
