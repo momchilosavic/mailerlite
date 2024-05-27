@@ -6,11 +6,11 @@ To build go application and use operator-sdk, docker container was used:
 * operator-sdk_linux_amd64
 
 ### Build and deploy operator
-</br> When code is ready, `operator/golang/src/Dockerfile` is used to build operator image: `docker build ./operator/golang/src -t email-operator:golang`.
-</br>For testing purpose, minikube and local image were used. Because of that, deployment definition in manifests/operator-deployment.yaml defines NeverPullPolicy and email-operator:golang image for cotainer image
-</br>Based on your environment `docker build` command and helm values must be adapted.
-</br>When image is ready, deploy Kubernetes resources: `helm upgrade --install email-operator .\helm\ --set "secrets[0].name=mail-token" --set "secrets[0].namespace=default" --set "secrets[0].token=<token value>" --debug`
-</br>When everything is ready, use `kubectl apply -f ./example` to test the operator
+#### __For testing purpose, minikube and local image were used. Because of that, deployment default definition in helm defines NeverPullPolicy and email-operator:golang image for cotainer image__<br><br>Based on your environment `docker build` command and helm values must be adapted.
+</br></br> When code is ready, `operator/golang/src/Dockerfile` is used to build operator image: `docker build ./operator/golang/src -t email-operator:golang`.
+</br></br>Based on your environment `docker build` command and helm values must be adapted.
+</br></br>When image is ready, deploy Kubernetes resources: `helm upgrade --install email-operator .\helm\ --set "secrets[0].name=mail-token" --set "secrets[0].namespace=default" --set "secrets[0].token=<token value>" --debug`
+</br></br>When everything is ready, use `kubectl apply -f ./example` to test the operator
 
 # Project structure
 * helm
