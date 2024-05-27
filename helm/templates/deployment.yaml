@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+      serviceAccountName: {{ .Release.Name }}
+      {{- with .Values.deployment.imagePullSecrets }}
+      imagePullSecrets:
+      {{ toYaml . | nindent 8 }} 
+      {{- end }}
+      containers:
+      - name: operator
+        image: {{ .Values.deployment.image }}
+        imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
+        resources:
+          requests:
+            cpu: {{ .Values.deployment.resources.requests.cpu }}
+            memory: {{ .Values.deployment.resources.requests.memory }}
+          limits:
+            cpu: {{ .Values.deployment.resources.limits.cpu }}
+            memory: {{ .Values.deployment.resources.limits.memory }}
